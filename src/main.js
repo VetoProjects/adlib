@@ -52,7 +52,7 @@ var connectPlayer = function(player, formId) {
         false
     );
     var canvas = form.querySelector('.preview');
-    var gl = canvas.getContext("experimental-webgl");
+    var gl = canvas.getContext('experimental-webgl');
     var texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, cubeTexture);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
