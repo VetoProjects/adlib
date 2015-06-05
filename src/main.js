@@ -51,7 +51,8 @@ var connectPlayer = function(player, formId) {
         player.pause,
         false
     );
-    var canvas = player.querySelector('.preview');
+    var canvas = form.querySelector('.preview');
+    var gl = canvas.getContext("experimental-webgl");
     var texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, cubeTexture);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
@@ -69,3 +70,5 @@ var connectPlayer = function(player, formId) {
 
 var player1 = player();
 connectPlayer(player1, 'player1');
+var player2 = player();
+connectPlayer(player2, 'player2');
