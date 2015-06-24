@@ -68,36 +68,36 @@ var connectPlayer = function(player, formId) {
     // vertex shader
     var vertexShader = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexShader,
-        "attribute highp vec3 aVertexPosition;"+
-        "attribute highp vec2 aTextureCoord;" +
+        'attribute highp vec3 aVertexPosition;' +
+        'attribute highp vec2 aTextureCoord;' +
 
-        "varying highp vec2 vTextureCoord;" +
+        'varying highp vec2 vTextureCoord;' +
 
-        "void main(void) {" +
-        "    gl_Position = vec4(aVertexPosition, 1);" +
-        "    vTextureCoord = aTextureCoord;" +
-        "}"
+        'void main(void) {' +
+        '    gl_Position = vec4(aVertexPosition, 1);' +
+        '    vTextureCoord = aTextureCoord;' +
+        '}'
     );
     gl.compileShader(vertexShader);
     if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
-        alert("An error occurred compiling the shaders: " + gl.getShaderInfoLog(vertexShader));
+        alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(vertexShader));
     }
 
     // fragment shader
     var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
     gl.shaderSource(fragmentShader,
-        "varying highp vec2 vTextureCoord;" +
+        'varying highp vec2 vTextureCoord;' +
 
-        "uniform sampler2D video;" +
+        'uniform sampler2D video;' +
 
-        "void main(void) {" +
-        "    gl_FragColor = vec4(1.0,0.0,0.0,1.0);" +
-        "    gl_FragColor = texture2D(video, vec2(vTextureCoord.s, vTextureCoord.t));" +
-        "}"
+        'void main(void) {' +
+        '    gl_FragColor = vec4(1.0,0.0,0.0,1.0);' +
+        '    gl_FragColor = texture2D(video, vec2(vTextureCoord.s, vTextureCoord.t));' +
+        '}'
     );
     gl.compileShader(fragmentShader);
     if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
-        alert("An error occurred compiling the shaders: " + gl.getShaderInfoLog(fragmentShader));
+        alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(fragmentShader));
     }
 
 
@@ -110,9 +110,9 @@ var connectPlayer = function(player, formId) {
     gl.useProgram(shaderProgram);
 
     // shader attributes
-    vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+    vertexPositionAttribute = gl.getAttribLocation(shaderProgram, 'aVertexPosition');
     gl.enableVertexAttribArray(vertexPositionAttribute);
-    vertexTextureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
+    vertexTextureCoordAttribute = gl.getAttribLocation(shaderProgram, 'aTextureCoord');
     gl.enableVertexAttribArray(vertexTextureCoordAttribute);
 
     // create draw plane
@@ -120,15 +120,15 @@ var connectPlayer = function(player, formId) {
     var vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     var vertexArray = new Float32Array([
-        1.0, 1.0,0.0,    1.0,-1.0,0.0,   -1.0,1.0,0.0,
-        1.0,-1.0,0.0,   -1.0,-1.0,0.0,   -1.0,1.0,0.0]); // WebGLFloatArray
+        1, 1, 0, 1, -1, 0, -1, 1, 0,
+        1, -1, 0, -1, -1, 0, -1, 1, 0]); // WebGLFloatArray
     gl.bufferData(gl.ARRAY_BUFFER, vertexArray, gl.STATIC_DRAW);
     // uv buffer
     var uvBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, uvBuffer);
     var uvArray = new Float32Array([
-        1,0, 1,1, 0,0,
-        1,1, 0,1, 0,0]);
+        1, 0, 1, 1, 0, 0,
+        1, 1, 0, 1, 0, 0]);
     gl.bufferData(gl.ARRAY_BUFFER, uvArray, gl.STATIC_DRAW);
 
     // draw
@@ -156,7 +156,7 @@ var connectPlayer = function(player, formId) {
         // bind texture
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.uniform1i(gl.getUniformLocation(shaderProgram, "video"), 0);
+        gl.uniform1i(gl.getUniformLocation(shaderProgram, 'video'), 0);
 
         // draw plane
         gl.drawArrays(gl.TRIANGLES, 0, 6);

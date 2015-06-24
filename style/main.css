@@ -14,6 +14,16 @@ body {
   margin-top: 2%;
 }
 
+div.github-fork-ribbon {
+  background-color: #FFF;
+}
+
+div.github-fork-ribbon a, div.github-fork-ribbon a:hover {
+  color: #000;
+  text-shadow: none;
+  border-color: rgba(0,0,0,.5);
+}
+
 #player1 {
   margin-right: 0;
 }
