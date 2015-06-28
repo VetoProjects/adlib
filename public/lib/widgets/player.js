@@ -15,14 +15,35 @@ var player = function() {
             _video.play();
     };
 
+    _player.volume = function(val) {
+        _video.volume = val;
+    };
+
+
+    _player.time = function(value) {
+        _video.currentTime = value;
+    };
+
     _player.pause = function() {
         if (!_video.paused)
             _video.pause();
     };
 
+    _player.getTime = function() {
+        return _video.currentTime;
+    };
+
+    _player.getDuration = function() {
+        return _video.duration;
+    };
+
     _player.updateListener = function(callback) {
         if (typeof callback === 'function')
             _updateCallback.push(callback);
+    };
+
+    _player.addTimeUpdateCallback = function(callback) {
+        _video.addEventListener('timeupdate', callback, false);
     };
 
     _video.addEventListener('ended', _player.pause, true);

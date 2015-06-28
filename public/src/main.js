@@ -96,6 +96,11 @@ Crossfader(document.getElementById('video'), player1, player2).then(function(cro
             false
         );
 
+        player.addTimeUpdateCallback(function() {
+            form.time.max = Math.ceil(player.getDuration());
+            form.time.value = Math.round(player.getTime());
+        });
+
         var canvas = form.querySelector('.preview');
         return Promise.all([
             AsyncFile('lib/webgl/vertexShader.vs'),
