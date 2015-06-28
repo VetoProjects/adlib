@@ -2,6 +2,8 @@ var VideoCanvas = function(canvas, vs, fs, videos, uniforms) {
     // create context
     console.log(canvas);
     var gl = canvas.getContext('experimental-webgl');
+    gl.width = canvas.width;
+    gl.height = canvas.height;
     console.log(gl);
 
     // shader program
@@ -41,14 +43,10 @@ var VideoCanvas = function(canvas, vs, fs, videos, uniforms) {
 
     // draw
     function draw() {
-        if (textures.some(function(texture) {
-            return !texture.ready;
-        }))
-            return;
-
         // update textures
         textures.forEach(function(texture) {
-            texture.update();
+            if (!texture.video.paused)
+                texture.update();
         });
 
         // clear buffers
