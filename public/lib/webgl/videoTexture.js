@@ -16,15 +16,23 @@ var VideoTexture = function(gl, uniformLocation, textureId, video) {
         gl.bindTexture(gl.TEXTURE_2D, null);
     }
 
+    function clear() {
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+        gl.bindTexture(gl.TEXTURE_2D, null);
+    }
+
     function bind() {
         gl.activeTexture(gl.TEXTURE0 + textureId);
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.uniform1i(uniformLocation, textureId);
     }
 
+    clear();
+
     return {
         update: update,
         bind: bind,
-        get ready() { return !video.paused; }
+        video: video
     };
 };
