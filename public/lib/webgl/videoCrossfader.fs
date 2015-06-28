@@ -28,9 +28,8 @@ vec3 hsv2rgb(vec3 c) {
 }
 
 vec4 fadeAdditive(vec4 c0, vec4 c1, float fade) {
-    c0.a *= (1.0 - max(fade, 0.0));
-    c1.a *= (1.0 + min(fade, 0.0));
-    return c0 + c1;
+    return c0 * (1.0 - max(fade, 0.0)) +
+           c1 * (1.0 + min(fade, 0.0));
 }
 
 vec4 fadeMultiplivative(vec4 c0, vec4 c1, float fade) {
