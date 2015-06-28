@@ -25,15 +25,15 @@
                 <br>
 
                 <label for="brightness1">Brightness</label>
-                <input type="range" is="veto-knob" id="brightness1" name="brightness" min="0" max="2" value="1">
+                <input type="range" is="veto-knob" id="brightness1" name="brightness" min="0" max="2" step="0.02" value="1">
                 <br>
 
                 <label for="saturation1">Saturation</label>
-                <input type="range" is="veto-knob" id="saturation1" name="saturation" min="0" max="2" value="1">
+                <input type="range" is="veto-knob" id="saturation1" name="saturation" min="0" max="2" step="0.02" value="1">
                 <br>
 
                 <label for="hue1">Hue</label>
-                <input type="range" is="veto-knob" id="hue1" name="hue" min="0" max="2" value="1">
+                <input type="range" is="veto-knob" id="hue1" name="hue" min="-0.5" max="0.5" step="0.01" value="0">
                 <br>
 
                 <input type="button" id="play1" name="play" value="Play">
@@ -59,15 +59,15 @@
                 <br>
 
                 <label for="brightness2">Brightness</label>
-                <input type="range" is="veto-knob" id="brightness2" name="brightness" min="0" max="2" value="1">
+                <input type="range" is="veto-knob" id="brightness2" name="brightness" min="0" max="2" step="0.02" value="1">
                 <br>
 
                 <label for="saturation2">Saturation</label>
-                <input type="range" is="veto-knob" id="saturation2" name="saturation" min="0" max="2" value="1">
+                <input type="range" is="veto-knob" id="saturation2" name="saturation" min="0" max="2" step="0.02" value="1">
                 <br>
 
                 <label for="hue2">Hue</label>
-                <input type="range" is="veto-knob" id="hue2" name="hue" min="0" max="2" value="1">
+                <input type="range" is="veto-knob" id="hue2" name="hue" min="-0.5" max="0.5" step="0.01" value="0">
                 <br />
 
                 <input type="button" id="play2" name="play" value="Play" />
@@ -92,6 +92,7 @@
             </div>
         </div>
 
+        <script charset="utf-8" type="text/javascript" src="lib/asyncFile.js"></script>
         <script charset="utf-8" type="text/javascript" src="lib/effects/object.js"></script>
         <script charset="utf-8" type="text/javascript" src="lib/widgets/player.js"></script>
         <script charset="utf-8" type="text/javascript" src="lib/widgets/kernel.js"></script>

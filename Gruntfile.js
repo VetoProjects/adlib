@@ -5,7 +5,7 @@ module.exports = function (grunt) {
             server: {
                 options: {
                     port: 8001,
-                    base: './'
+                    base: './public'
                 }
             }
         },
@@ -17,7 +17,7 @@ module.exports = function (grunt) {
               }
             },
             js: {
-                src: ['lib/*/*.js', 'src/*.js']
+                src: ['public/lib/*/*.js', 'public/src/*.js']
             }
         },
         uglify: {
@@ -29,21 +29,22 @@ module.exports = function (grunt) {
           },
           js: {
             files: {
-              'dist/js/deploy.js': [
-                      'lib/effects/object.js', 
-                      'lib/*/*.js', 
-                      'src/*.js'
+              'public/dist/js/deploy.js': [
+                      'public/lib/effects/object.js',
+                      'public/lib/fades/object.js',
+                      'public/lib/*/*.js',
+                      'public/src/*.js'
                       ]
             }
           }
         },
         watch: {
             prod: {
-                files: ['**/*.js', 'html/**/*.html', '!dist/js/*'],
+                files: ['public/**/*.js', 'html/**/*.html', '!public/dist/js/*'],
                 tasks: ['uglify:js', 'gjslint:js', 'preprocess:prod']
             },
             dev: {
-                files: ['**/*.js', 'html/**/*.html', '!dist/js/*'],
+                files: ['./public/**/*.js', './public/html/**/*.html', '!public/dist/js/*'],
                 tasks: ['gjslint:js', 'preprocess:dev']
            }
         },
@@ -61,11 +62,11 @@ module.exports = function (grunt) {
         preprocess: {
             dev: {
                 src: './html/dev/index.html',
-                dest: './index.html'
+                dest: './public/index.html'
             },
             prod: {
                 src: './html/prod/index.html',
-                dest: './index.html'
+                dest: './public/index.html'
             }
         }
     });

@@ -1,10 +1,10 @@
 var ShaderProgram = function(gl, vsCode, fsCode) {
-    // vertex shader
+    // vertex shaders
     var vertexShader = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexShader, vsCode);
     gl.compileShader(vertexShader);
     if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
-        console.error('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(vertexShader));
+        console.error('An error occurred compiling vertex shaders: ' + gl.getShaderInfoLog(vertexShader), vsCode);
         return null;
     }
 
@@ -13,7 +13,7 @@ var ShaderProgram = function(gl, vsCode, fsCode) {
     gl.shaderSource(fragmentShader, fsCode);
     gl.compileShader(fragmentShader);
     if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
-        console.error('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(fragmentShader));
+        console.error('An error occurred compiling fragment shaders: ' + gl.getShaderInfoLog(fragmentShader), fsCode);
         return null;
     }
 

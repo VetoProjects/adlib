@@ -1,10 +1,11 @@
-var VideoCanvas = function(canvas, vsUrl, fsUrl, videos, uniforms) {
+var VideoCanvas = function(canvas, vs, fs, videos, uniforms) {
     // create context
     console.log(canvas);
     var gl = canvas.getContext('experimental-webgl');
     console.log(gl);
-    // vertex shader
-    var shaderProgram = ShaderProgramFromUrls(gl, vsUrl, fsUrl);
+
+    // shader program
+    var shaderProgram = ShaderProgram(gl, vs, fs);
 
     // shader attributes
     var vertexPosition = shaderProgram.attributeLocation('aVertexPosition');
@@ -70,17 +71,16 @@ var VideoCanvas = function(canvas, vsUrl, fsUrl, videos, uniforms) {
         gl.drawArrays(gl.TRIANGLES, 0, 6);
     }
 
-    var uniformProperties = { };
+    var videoCanvas = {
+        get draw() { return draw; }
+    };
     uniforms.forEach(function(name) {
         var id = shaderProgram.uniformLocation(name);
-        Object.defineProperty(uniformProperties, name, {
+        Object.defineProperty(videoCanvas, name, {
             get() { return gl.getUniform(id); },
             set(val) { gl.uniform1f(id, val); }
         });
     });
 
-    return {
-        get draw() { return draw; },
-        get uniforms() { return uniformProperties; }
-    };
+    return videoCanvas;
 };
