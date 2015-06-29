@@ -1,13 +1,11 @@
 precision highp float;
 
-varying highp vec2 vTextureCoord;
+varying vec2 vTextureCoord;
 
-uniform int time;
-uniform float fader,
-    hue0, lightness0, saturation0, line0,
-    hue1, lightness1, saturation1, line1;
-uniform sampler2D video0;
-uniform sampler2D video1;
+uniform float fader, fadeEffect, time,
+    hue0, lightness0, saturation0, line0, rotation0, scaleX0, scaleY0,
+    hue1, lightness1, saturation1, line1, rotation1, scaleX1, scaleY1;
+uniform sampler2D video0, video1;
 
 vec3 rgb2hsv(vec3 c) {
     vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
@@ -27,6 +25,37 @@ vec3 hsv2rgb(vec3 c) {
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
+vec4 apply(vec2 uv, sampler2D video, float hue, float lightness,
+    float saturation, float line, float rotation, float scaleX, float scaleY)
+{
+    // scale
+    uv = (uv - 0.5) * vec2(scaleX, scaleY) + 0.5;
+
+    // rotate
+    float sinf = sin(rotation);
+    float cosf = cos(rotation);
+    uv = (uv - 0.5) * mat2(cosf, sinf, -sinf, cosf) + 0.5;
+
+    // pick color
+    vec4 color = texture2D(video, fract(uv));
+
+    // black correction
+    color.rgb -= 0.065;
+    color.rgb /= 0.935;
+
+    //line fader
+    color.a = (color.r + color.g + color.b) / 3.0;
+
+    // hsl properties
+    vec3 hsv = rgb2hsv(color.rgb);
+    hsv.x += hue;
+    hsv.y *= saturation;
+    hsv.z *= lightness;
+    color.rgb = hsv2rgb(hsv) * line;
+
+    return color;
+}
+
 vec4 fadeAdditive(vec4 c0, vec4 c1, float fade) {
     return c0 * (1.0 - max(fade, 0.0)) +
            c1 * (1.0 + min(fade, 0.0));
@@ -41,32 +70,12 @@ vec4 fadeMultiplivative(vec4 c0, vec4 c1, float fade) {
 }
 
 void main(void) {
-    vec4 color0 = texture2D(video0, vTextureCoord);
-    vec4 color1 = texture2D(video1, vTextureCoord);
+    vec2 uv = vTextureCoord;
+    vec4 color0 = apply(uv, video0, hue0, lightness0, saturation0, line0, rotation0, scaleX0, scaleY0);
+    vec4 color1 = apply(uv, video1, hue1, lightness1, saturation1, line1, rotation1, scaleX1, scaleY1);
 
-    color0.a = line0 * (color0.r + color0.g + color0.b) / 3.0;
-    color1.a = line1 * (color1.r + color1.g + color1.b) / 3.0;
-
-    color0.rgb -= 0.065;
-    color1.rgb -= 0.065;
-
-    color0.rgb /= 0.935;
-    color1.rgb /= 0.935;
-
-    vec3 hsv0 = rgb2hsv(color0.rgb);
-    vec3 hsv1 = rgb2hsv(color1.rgb);
-
-    hsv0.x += hue0;
-    hsv1.x += hue1;
-
-    hsv0.y *= saturation0;
-    hsv1.y *= saturation1;
-
-    hsv0.z *= lightness0;
-    hsv1.z *= lightness1;
-
-    color0.rgb = hsv2rgb(hsv0);
-    color1.rgb = hsv2rgb(hsv1);
-
-    gl_FragColor = fadeAdditive(color0, color1, fader);
+    if (fadeEffect == 1.0)
+        gl_FragColor = fadeMultiplivative(color0, color1, fader);
+    else
+        gl_FragColor = fadeAdditive(color0, color1, fader);
 }

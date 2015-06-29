@@ -15,6 +15,29 @@
 // videoWin.body.style.backgroundColor = '#000';
 // videoWIn.document.body.appendChild(document.getElementById('video'))
 
+document.getElementById('learnButton').addEventListener('click', function() {
+    if (midi.isLearning()) {
+        midi.stopLearning();
+        this.value = 'Start Learning';
+    } else {
+        midi.startLearning();
+        this.value = 'Stop Learning';
+    }
+});
+/**
+ * Set the callback for messages
+ * @param { string } msg message to show
+ */
+midi.onmessage = function(msg) {
+    var span = document.getElementById('learnMessage');
+    span.innerHTML = msg;
+
+    setTimeout(function() {
+      span.innerHTML = '';
+    }, 5000);
+};
+
+// reset on double click
 var sliders = document.querySelectorAll('input[type=range]');
 for (var i = 0; i < sliders.length; ++i) {
     sliders[i].addEventListener(
@@ -39,19 +62,41 @@ for (var i = 0; i < sliders.length; ++i) {
 // template (substitute keywords)
 // TODO: js for arguments
 
+var startTime = Date.now();
+var videoProperties = ['hue', 'lightness', 'saturation', 'line', 'rotation', 'scaleX', 'scaleY'];
+
 // init players and crossfader
 var player1 = player();
 var player2 = player();
-Crossfader(document.getElementById('video'), player1, player2).then(function(crossfader) {
+Promise.all([
+    AsyncFile('lib/webgl/vertexShader.vs'),
+    AsyncFile('lib/webgl/singleVideo.fs'),
+    Crossfader(document.getElementById('video'), player1, player2)]).
+then(function(args) {
+    vsCode = args[0];
+    fsCode = args[1];
+    crossfader = args[2];
     console.log('crossfader created');
     // connect input elements to crossfader
     document.getElementById('crossfader').addEventListener('input', function() {
         crossfader.fader = this.value;
     });
+    document.getElementById('fadeEffect').addEventListener('input', function() {
+        console.log(this.selectedIndex);
+        crossfader.fadeEffect = this.selectedIndex;
+    });
 
     // connect input elements to player
     var connectPlayer = function(player, formId, index) {
         var form = document.getElementById(formId);
+        var canvas = form.querySelector('.preview');
+        var videoCanvas = VideoCanvas(
+            canvas,
+            vsCode,
+            fsCode,
+            [player.video],
+            videoProperties.concat('time'));
+
         form.videoFile.addEventListener(
             'change',
             function(e) { player.load(this.files[0]); },
@@ -77,61 +122,33 @@ Crossfader(document.getElementById('video'), player1, player2).then(function(cro
             player.pause,
             false
         );
-        crossfader['lightness' + index] = form.brightness.value;
-        form.brightness.addEventListener(
-            'input',
-            function(e) { crossfader['lightness' + index] = this.value; },
-            false
-        );
-        crossfader['hue' + index] = form.hue.value;
-        form.hue.addEventListener(
-            'input',
-            function(e) { crossfader['hue' + index] = this.value; },
-            false
-        );
-        crossfader['saturation' + index] = form.saturation.value;
-        form.saturation.addEventListener(
-            'input',
-            function(e) { crossfader['saturation' + index] = this.value; },
-            false
-        );
+
+        videoProperties.forEach(function(p) {
+            videoCanvas[p] = crossfader[p + index] = form[p].value;
+            form[p].addEventListener('input', function(e) {
+                videoCanvas[p] = crossfader[p + index] = this.value;
+            }, false)});
 
         player.addTimeUpdateCallback(function() {
             form.time.max = Math.ceil(player.getDuration());
             form.time.value = Math.round(player.getTime());
         });
 
-        var canvas = form.querySelector('.preview');
-        return Promise.all([
-            AsyncFile('lib/webgl/vertexShader.vs'),
-            AsyncFile('lib/webgl/singleVideo.fs')]).
-                then(function(shader) {
-                    var videoCanvas = VideoCanvas(
-                        canvas,
-                        shader[0],
-                        shader[1],
-                        [player.video],
-                        []);
-                    return {
-                        draw: videoCanvas.draw
-                    };
-                });
+        return videoCanvas;
     };
 
     var con1 = connectPlayer(player1, 'player1', 0);
     var con2 = connectPlayer(player2, 'player2', 1);
 
     // draw loop
-    Promise.all([con1, con2]).then(function(con) {
-        (function update() {
-            con[0].draw();
-            con[1].draw();
-            crossfader.draw();
-            requestAnimationFrame(update);
-        })();
-    }).catch (function(msg) {
-        console.log('Failed to connect player.', msg);
-    });
+    (function update() {
+        con1.time = con2.time = crossfader.time = (Date.now() - startTime) / 1000.0;
+
+        con1.draw();
+        con2.draw();
+        crossfader.draw();
+        requestAnimationFrame(update);
+    })();
 }).catch (function(msg) {
-    console.log('Failed to create crossfader', msg);
+    console.error(Error(msg));
 });

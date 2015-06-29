@@ -16,86 +16,128 @@
         </div>
 
         <div class="spacing">
-            <form class="player" id="player1">
-                <canvas class="preview"></canvas>
-                <br />
+            <div class="content">
+                <form class="player" id="player1">
+                    <canvas class="preview"></canvas>
+                    <br>
 
-                <label for="filechooser1">Video:</label>
-                <input type="file" id="filechooser1" name="videoFile" accept="video/*">
-                <br>
+                    <label for="filechooser1">Video:</label>
+                    <input type="file" id="filechooser1" name="videoFile" accept="video/*">
+                    <br>
 
-                <label for="brightness1">Brightness</label>
-                <input type="range" is="veto-knob" id="brightness1" name="brightness" min="0" max="2" step="0.02" value="1">
-                <br>
+                    <label for="lightness1">Brightness</label>
+                    <input type="range" is="veto-knob" id="lightness1" name="lightness" min="0" max="2" step="0.02" value="1">
+                    <br>
 
-                <label for="saturation1">Saturation</label>
-                <input type="range" is="veto-knob" id="saturation1" name="saturation" min="0" max="2" step="0.02" value="1">
-                <br>
+                    <label for="saturation1">Saturation</label>
+                    <input type="range" is="veto-knob" id="saturation1" name="saturation" min="0" max="2" step="0.02" value="1">
+                    <br>
 
-                <label for="hue1">Hue</label>
-                <input type="range" is="veto-knob" id="hue1" name="hue" min="-0.5" max="0.5" step="0.01" value="0">
-                <br>
+                    <label for="hue1">Hue</label>
+                    <input type="range" is="veto-knob" id="hue1" name="hue" min="-0.5" max="0.5" step="0.01" value="0">
+                    <br>
 
-                <input type="button" id="play1" name="play" value="Play">
-                <input type="button" id="pause1" name="pause" value="Pause">
-                <br>
+                    <label for="line1">Line</label>
+                    <input type="range" id="line1" name="line" min="0" max="1" step="0.01" value="1">
+                    <br>
 
-                <label class="slide" for="volume1">Volume:</label>
-                <input type="range" id="volume1" name="volume" min="0" max="1" step="0.005" value="1">
-                <br />
+                    <input type="button" id="play1" name="play" value="Play">
+                    <input type="button" id="pause1" name="pause" value="Pause">
+                    <br>
 
-                <label class="slide" for="time1">Time:</label>
-                    <input type="range" id="time1" name="time" min="0" max="1" step="0.005" value="0">
-            </form>
+                    <label class="slide" for="volume1">Volume</label>
+                    <input type="range" id="volume1" name="volume" min="0" max="1" step="0.01" value="1">
+                    <br>
 
-            <canvas id="video"></canvas>
+                    <label class="slide" for="time1">Time</label>
+                    <input type="range" id="time1" name="time" min="0" max="1" step="0.01" value="0">
+                    <br>
 
-            <form class="player" id="player2">
-                <canvas class="preview"></canvas>
-                <br />
+                    <label for="rotation2">Rotation</label>
+                    <input type="range" is="veto-knob" id="rotation2" name="rotation" min="-3.141592" max="3.141592" step="0.06283184" value="0">
+                    <br>
 
-                <label for="filechooser2">Video:</label>
-                <input type="file" id="filechooser2" name="videoFile" accept="video/*">
-                <br>
+                    <label for="scaleX1">Scale X</label>
+                    <input type="range" is="veto-knob" id="scaleX1" name="scaleX" min="0" max="2" step="0.02" value="1">
+                    <br>
 
-                <label for="brightness2">Brightness</label>
-                <input type="range" is="veto-knob" id="brightness2" name="brightness" min="0" max="2" step="0.02" value="1">
-                <br>
+                    <label for="scaleY1">Scale Y</label>
+                    <input type="range" is="veto-knob" id="scaleY1" name="scaleY" min="-0" max="2" step="0.02" value="1">
+                </form>
 
-                <label for="saturation2">Saturation</label>
-                <input type="range" is="veto-knob" id="saturation2" name="saturation" min="0" max="2" step="0.02" value="1">
-                <br>
+                <canvas id="video"></canvas>
 
-                <label for="hue2">Hue</label>
-                <input type="range" is="veto-knob" id="hue2" name="hue" min="-0.5" max="0.5" step="0.01" value="0">
-                <br />
+                <form class="player" id="player2">
+                    <canvas class="preview"></canvas>
+                    <br>
 
-                <input type="button" id="play2" name="play" value="Play" />
-                <input type="button" id="pause2" name="pause" value="Pause" />
-                <br>
+                    <label for="filechooser2">Video:</label>
+                    <input type="file" id="filechooser2" name="videoFile" accept="video/*">
+                    <br>
 
-                <label class="slide" for="volume2">Volume:</label>
-                <input type="range" id="volume2" name="volume" min="0" max="1" step="0.005" value="1" />
+                    <label for="lightness2">Brightness</label>
+                    <input type="range" is="veto-knob" id="lightness2" name="lightness" min="0" max="2" step="0.02" value="1">
+                    <br>
 
-                <br />
-                <label class="slide" for="time2">Time:</label>
-                <input type="range" id="time2" name="time" min="0" max="1" step="0.005" value="0" />
-            </form>
+                    <label for="saturation2">Saturation</label>
+                    <input type="range" is="veto-knob" id="saturation2" name="saturation" min="0" max="2" step="0.02" value="1">
+                    <br>
 
-            <form class="centered" action=".">
-                <label class="slide" for="crossfader">Crossfader:</label>
-                <input type="range" id="crossfader" min="-1" max="1" step="0.01" value="0" />
-            </form>
+                    <label for="hue2">Hue</label>
+                    <input type="range" is="veto-knob" id="hue2" name="hue" min="-0.5" max="0.5" step="0.01" value="0">
+                    <br>
+
+                    <label for="line2">Line</label>
+                    <input type="range" id="line2" name="line" min="0" max="1" step="0.01" value="1">
+                    <br>
+
+                    <input type="button" id="play2" name="play" value="Play" />
+                    <input type="button" id="pause2" name="pause" value="Pause" />
+                    <br>
+
+                    <label class="slide" for="volume2">Volume</label>
+                    <input type="range" id="volume2" name="volume" min="0" max="1" step="0.01" value="1" />
+                    <br>
+
+                    <label class="slide" for="time2">Time</label>
+                    <input type="range" id="time2" name="time" min="0" max="1" step="0.01" value="0" />
+                    <br>
+
+                    <label for="rotation2">Rotation</label>
+                    <input type="range" is="veto-knob" id="rotation2" name="rotation" min="-3.141592" max="3.141592" step="0.06283184" value="0">
+                    <br>
+
+                    <label for="scaleX2">Scale X</label>
+                    <input type="range" is="veto-knob" id="scaleX2" name="scaleX" min="0" max="2" step="0.02" value="1">
+                    <br>
+
+                    <label for="scaleY2">Scale Y</label>
+                    <input type="range" is="veto-knob" id="scaleY2" name="scaleY" min="0" max="2" step="0.02" value="1">
+                </form>
+
+                <form class="centered" action=".">
+                    <label class="" for="fadeEffect">Fade effect:</label>
+                    <select id="fadeEffect">
+                        <option>Additive</option>
+                        <option>Multiplicative</option>
+                    </select>
+                    <label class="slide" for="crossfader">Crossfader:</label>
+                    <input type="range" id="crossfader" min="-1" max="1" step="0.01" value="0" />
+                </form>
+            </div>
+
+            <div class="bottom">
+                <input type="button" id="learnButton" value="Start Learning" /><span id="learnMessage"></span>
+            </div>
 
             <div class="footer">
               <p>Proudly developed by <a href="//github.com/VetoProjects">Veto</a> using the WebGL API.</p>
             </div>
         </div>
 
+        <script charset="utf-8" type="text/javascript" src="lib/midi.js"></script>
         <script charset="utf-8" type="text/javascript" src="lib/asyncFile.js"></script>
-        <script charset="utf-8" type="text/javascript" src="lib/effects/object.js"></script>
         <script charset="utf-8" type="text/javascript" src="lib/widgets/player.js"></script>
-        <script charset="utf-8" type="text/javascript" src="lib/widgets/kernel.js"></script>
         <script charset="utf-8" type="text/javascript" src="lib/webgl/shaderProgram.js"></script>
         <script charset="utf-8" type="text/javascript" src="lib/webgl/videoTexture.js"></script>
         <script charset="utf-8" type="text/javascript" src="lib/widgets/videoCanvas.js"></script>

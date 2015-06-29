@@ -44,7 +44,7 @@ module.exports = function (grunt) {
                 tasks: ['uglify:js', 'gjslint:js', 'preprocess:prod']
             },
             dev: {
-                files: ['./public/**/*.js', './public/html/**/*.html', '!public/dist/js/*'],
+                files: ['./public/**/*.js', './html/**/*.html', '!public/dist/js/*'],
                 tasks: ['gjslint:js', 'preprocess:dev']
            }
         },

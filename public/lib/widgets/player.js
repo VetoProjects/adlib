@@ -11,7 +11,7 @@ var player = function() {
     };
 
     _player.play = function() {
-        if (_video.paused)
+        if (_video.paused && _video.src)
             _video.play();
     };
 
