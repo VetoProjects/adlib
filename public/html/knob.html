@@ -120,8 +120,8 @@
         if (img)  this.style.backgroundImage = img;
         if (min)  this.min = parseFloat(min);
         if (max)  this.max = parseFloat(max);
-        if (step) this.step = step;
 
+        this.step = step || ((max - min) / 100.0);
         this.value = this.defaultValue = parseFloat(val || (_max + _min) / 2.0);
 
 
@@ -136,7 +136,7 @@
         }
         function mousemove(e) {
             if(e.clientX && e.clientY) {
-                _self.value = _drag.value + Math.round(((e.clientX - _drag.x) + (_drag.y - e.clientY)) / 3) * _self.step;
+                _self.value = _drag.value + Math.round(((e.clientX - _drag.x) + (_drag.y - e.clientY)) / 3.0) * _self.step;
             }
             e.preventDefault();
             return e.returnValue = false;
