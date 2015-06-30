@@ -58,8 +58,8 @@ div.github-fork-ribbon a, div.github-fork-ribbon a:hover {
 
 .footer {
   margin-top: 5%;
-  width: 100%;
-  text-align: center;
+  margin-left: 25%;
+  width: 50%;
   font-size: 14px;
 }
 
@@ -123,12 +123,16 @@ input[type="button"]:hover {
   width: 25%;
 }
 
-#player1 {
+#player1, #player2 {
   float: left;
 }
 
-#player2 {
+#player3, #player4 {
   float: right;
+}
+
+.hidden {
+    display: none;
 }
 
 .centered {

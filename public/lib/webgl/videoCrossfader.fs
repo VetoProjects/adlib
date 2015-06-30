@@ -4,8 +4,10 @@ varying vec2 vTextureCoord;
 
 uniform float fader, fadeEffect, time,
     hue0, lightness0, saturation0, line0, rotation0, scaleX0, scaleY0,
-    hue1, lightness1, saturation1, line1, rotation1, scaleX1, scaleY1;
-uniform sampler2D video0, video1;
+    hue1, lightness1, saturation1, line1, rotation1, scaleX1, scaleY1,
+    hue2, lightness2, saturation2, line2, rotation2, scaleX2, scaleY2,
+    hue3, lightness3, saturation3, line3, rotation3, scaleX3, scaleY3;
+uniform sampler2D video0, video1, video2, video3;
 
 vec3 rgb2hsv(vec3 c) {
     vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
@@ -73,9 +75,11 @@ void main(void) {
     vec2 uv = vTextureCoord;
     vec4 color0 = apply(uv, video0, hue0, lightness0, saturation0, line0, rotation0, scaleX0, scaleY0);
     vec4 color1 = apply(uv, video1, hue1, lightness1, saturation1, line1, rotation1, scaleX1, scaleY1);
+    vec4 color2 = apply(uv, video2, hue2, lightness2, saturation2, line2, rotation2, scaleX2, scaleY2);
+    vec4 color3 = apply(uv, video3, hue3, lightness3, saturation3, line3, rotation3, scaleX3, scaleY3);
 
     if (fadeEffect == 1.0)
-        gl_FragColor = fadeMultiplivative(color0, color1, fader);
+        gl_FragColor = fadeMultiplivative(color0 + color1, color2 + color3, fader);
     else
-        gl_FragColor = fadeAdditive(color0, color1, fader);
+        gl_FragColor = fadeAdditive(color0 + color1, color2 + color3, fader);
 }

@@ -11,9 +11,35 @@
 // })();
 
 
-//var videoWin = window.open('about:blank', '_blank','menubar=no, titlebar=no, toolbar=no, status=no, location=no, scrollbars=no, directories=no');
-// videoWin.body.style.backgroundColor = '#000';
-// videoWIn.document.body.appendChild(document.getElementById('video'))
+var videoWin = null;
+var switchToMode2 = function() {
+    if (videoWin) {
+        var p3 = document.getElementById('player3');
+        p3.parentElement.insertBefore(videoWin.document.getElementById('video'), p3);
+        if (!videoWin.closed) videoWin.close();
+    }
+    document.getElementById('player2').classList.add('hidden');
+    document.getElementById('player3').classList.add('hidden');
+    document.getElementById('switchMode').innerHTML = 'Switch to 4-Player-Mode';
+};
+var switchToMode4 = function() {
+    videoWin = window.open('about:blank', '_blank', 'menubar=no, titlebar=no, toolbar=no, status=no, location=no, scrollbars=no, directories=no, width=800, height=450');
+    videoWin.document.write('<html><head><link rel="stylesheet" href="style/videoWin.css" /><title>Adlib Video</title></head><body/></head>');
+    videoWin.document.body.appendChild(document.getElementById('video'));
+    videoWin.addEventListener('beforeunload', switchToMode2);
+    document.getElementById('player2').classList.remove('hidden');
+    document.getElementById('player3').classList.remove('hidden');
+    document.getElementById('switchMode').innerHTML = 'Switch to 2-Player-Mode';
+};
+
+document.getElementById('switchMode').addEventListener('click', function(e) {
+    e.preventDefault();
+    if (!videoWin || videoWin.closed)
+        switchToMode4();
+    else
+        switchToMode2();
+});
+
 
 document.getElementById('learnButton').addEventListener('click', function() {
     if (midi.isLearning()) {
@@ -68,10 +94,12 @@ var videoProperties = ['hue', 'lightness', 'saturation', 'line', 'rotation', 'sc
 // init players and crossfader
 var player1 = player();
 var player2 = player();
+var player3 = player();
+var player4 = player();
 Promise.all([
     AsyncFile('lib/webgl/vertexShader.vs'),
     AsyncFile('lib/webgl/singleVideo.fs'),
-    Crossfader(document.getElementById('video'), player1, player2)]).
+    Crossfader(document.getElementById('video'), [player1, player2, player3, player4])]).
 then(function(args) {
     vsCode = args[0];
     fsCode = args[1];
@@ -82,7 +110,6 @@ then(function(args) {
         crossfader.fader = this.value;
     });
     document.getElementById('fadeEffect').addEventListener('input', function() {
-        console.log(this.selectedIndex);
         crossfader.fadeEffect = this.selectedIndex;
     });
 
@@ -139,13 +166,17 @@ then(function(args) {
 
     var con1 = connectPlayer(player1, 'player1', 0);
     var con2 = connectPlayer(player2, 'player2', 1);
+    var con3 = connectPlayer(player3, 'player3', 2);
+    var con4 = connectPlayer(player4, 'player4', 3);
 
     // draw loop
     (function update() {
-        con1.time = con2.time = crossfader.time = (Date.now() - startTime) / 1000.0;
+        con1.time = con2.time = con3.time = con4.time = crossfader.time = (Date.now() - startTime) / 1000.0;
 
         con1.draw();
         con2.draw();
+        con3.draw();
+        con4.draw();
         crossfader.draw();
         requestAnimationFrame(update);
     })();
