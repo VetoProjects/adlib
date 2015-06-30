@@ -2,12 +2,14 @@ var player = function() {
     var _player = { };
     var _video = document.createElement('video');
     var _updateCallback = [];
+    var _speed = 1.0;
 
     _video.preload = 'auto';
     _video.loop = true;
 
     _player.load = function(file) {
         _video.setAttribute('src', URL.createObjectURL(file));
+        _video.defaultPlaybackRate = _video.playbackRate = _speed;
     };
 
     _player.play = function() {
@@ -40,6 +42,11 @@ var player = function() {
     _player.updateListener = function(callback) {
         if (typeof callback === 'function')
             _updateCallback.push(callback);
+    };
+
+    _player.speed = function(value) {
+        _speed = value;
+        _video.defaultPlaybackRate = _video.playbackRate = _speed;
     };
 
     _player.addTimeUpdateCallback = function(callback) {

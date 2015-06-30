@@ -149,6 +149,11 @@ then(function(args) {
             player.pause,
             false
         );
+        form.speed.addEventListener(
+            'input',
+            function(e) { player.speed(this.value); },
+            false
+        );
 
         videoProperties.forEach(function(p) {
             videoCanvas[p] = crossfader[p + index] = form[p].value;
