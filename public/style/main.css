@@ -58,8 +58,8 @@ div.github-fork-ribbon a, div.github-fork-ribbon a:hover {
 
 .footer {
   margin-top: 5%;
-  margin-left: 25%;
-  width: 50%;
+  width: 100%;
+  text-align: center;
   font-size: 14px;
 }
 
