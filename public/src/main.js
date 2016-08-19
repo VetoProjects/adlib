@@ -185,6 +185,6 @@ then(function(args) {
         crossfader.draw();
         requestAnimationFrame(update);
     })();
-}).catch (function(msg) {
+}).catch(function(msg) {
     console.error(Error(msg));
 });
