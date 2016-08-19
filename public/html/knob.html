@@ -2,7 +2,7 @@
 <template id="knob-template">
     <style>
     /* FireFox */
-        * {
+        input[is="veto-knob"] {
             cursor: pointer;
             width: 48px;
             height: 48px;
@@ -11,35 +11,25 @@
             background-size: 100%;
             border-radius: 100%;
             border: none;
+            -webkit-appearance: none;
         }
-        ::-moz-range-thumb {
+        input[is="veto-knob"]::-moz-range-thumb{
             background: none;
             border: none;
         }
-        ::-moz-range-track {
+        input[is="veto-knob"]::-moz-range-track {
             background: none
         }
     /* Chrome */
-        :host {
-            -webkit-appearance: none;
-           cursor: pointer;
-           width: 48px;
-           height: 48px;
-           background-color: transparent;
-           background-image: url('img/knob.png');
-           background-size: 100%;
-           border-radius: 100%;
-           border: none;
-        }
-        ::-webkit-slider-thumb {
+        input[is="veto-knob"]::-webkit-slider-thumb {
             -webkit-appearance: none;
         }
     /* Untested */
-        :host::-ie-thumb {
+        input[is="veto-knob"]::-ie-thumb {
             background: none;
             border: none;
         }
-        :host::-ie-track {
+        input[is="veto-knob"]::-ie-track {
             background: none
         }
     </style>
@@ -47,17 +37,19 @@
 
 
 <script>
-    var templateDoc = document.currentScript.ownerDocument;
-    var proto = Object.create(HTMLInputElement.prototype);
+    'use strict'
+    const templateDoc = document.currentScript.ownerDocument;
+    const proto = Object.create(HTMLInputElement.prototype);
     proto.createdCallback = function() {
-        var _self = this;
+        const _self = this;
 
         // Template / ShadowRoot
-        var root = this.createShadowRoot();
+        const root = document.createElement('shadow'); // before it was .createShadowRoot (any nicer way?)
+	this.appendChild(root);
         root.appendChild(templateDoc.getElementById('knob-template').cloneNode(true).content);
 
         // Properties
-        var _value = 0.5, _min = 0, _max = 1;
+        let _value = 0.5, _min = 0, _max = 1;
         Object.defineProperty(this, 'min', {
             get: function() { return _min; },
             set: function(val) {
@@ -90,9 +82,9 @@
         });
 
         // Update UI
-        var updateRotation = function() {
-            var deg = (_value - _self.min) / (_self.max - _self.min) * 240 - 120;
-            _self.style.transform = 'rotate(' + deg + 'deg)';
+        const updateRotation = function() {
+            const deg = (_value - _self.min) / (_self.max - _self.min) * 240 - 120;
+            _self.style.transform = `rotate(${deg}deg)`;
         };
 
         // Use new attributes
@@ -109,24 +101,24 @@
         };
 
         // Get user defined properties
-        var size = this.getAttribute('size');
-        var img  = this.getAttribute('img');
-        var min  = this.getAttribute('min');
-        var max  = this.getAttribute('max');
-        var val  = this.getAttribute('value');
-        var step = this.getAttribute('step');
+        const size = this.getAttribute('size');
+        const img  = this.getAttribute('img');
+        const min  = this.getAttribute('min');
+        const max  = this.getAttribute('max');
+        const val  = this.getAttribute('value');
+        const step = this.getAttribute('step');
 
         if (size) this.style.width = this.style.height = size;
         if (img)  this.style.backgroundImage = img;
         if (min)  this.min = parseFloat(min);
         if (max)  this.max = parseFloat(max);
+        if (step) this.step = step;
 
-        this.step = step || ((max - min) / 100.0);
         this.value = this.defaultValue = parseFloat(val || (_max + _min) / 2.0);
 
 
         // Handle mouse events
-        var _drag = null;
+        let _drag = null;
         function mousedown(e) {
             _drag = { x: e.clientX, y: e.clientY, value: _self.value };
             window.addEventListener('mousemove', mousemove, true);
@@ -136,7 +128,7 @@
         }
         function mousemove(e) {
             if(e.clientX && e.clientY) {
-                _self.value = _drag.value + Math.round(((e.clientX - _drag.x) + (_drag.y - e.clientY)) / 3.0) * _self.step;
+                _self.value = _drag.value + Math.round(((e.clientX - _drag.x) + (_drag.y - e.clientY)) / 3) * _self.step;
             }
             e.preventDefault();
             return e.returnValue = false;
@@ -154,7 +146,7 @@
         this.addEventListener('mousedown', mousedown, true);
     };
 
-    Knob = document.registerElement(
+    window.Knob = document.registerElement(
         'veto-knob', {
             extends: 'input',
             prototype: proto
