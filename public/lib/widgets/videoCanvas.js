@@ -76,8 +76,8 @@ var VideoCanvas = function(canvas, vs, fs, videos, uniforms) {
     uniforms.forEach(function(name) {
         var id = shaderProgram.uniformLocation(name);
         Object.defineProperty(videoCanvas, name, {
-            get() { return gl.getUniform(shaderProgram, id); },
-            set(val) { gl.uniform1f(id, val); }
+            get: function() { return gl.getUniform(shaderProgram, id); },
+            set: function(val) { gl.uniform1f(id, val); }
         });
     });
 
