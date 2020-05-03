@@ -57,6 +57,7 @@
             if (!this.hasAttribute('min')) this.setAttribute('min', '0');
             if (!this.hasAttribute('max')) this.setAttribute('max', '1');
             if (!this.hasAttribute('value')) this.setAttribute('value', "0.5");
+            if (!this.hasAttribute('step')) this.setAttribute('step', "0.01");
 
             if (this.img) this.attributeChangedCallback('img', null, this.img);
             if (this.size) this.attributeChangedCallback('size', null, this.size);
