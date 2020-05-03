@@ -1,4 +1,18 @@
 module.exports = function (grunt) {
+    const jsFiles = [
+        'lib/midi.js',
+        'lib/asyncFile.js',
+        'lib/widgets/player.js',
+        'lib/webgl/shaderProgram.js',
+        'lib/webgl/videoTexture.js',
+        'lib/widgets/videoCanvas.js',
+        'lib/widgets/crossfader.js',
+        'src/main.js',
+        'lib/widgets/knob.js',
+    ];
+
+    const pubJsFiles = jsFiles.map(path => `public/${path}`);
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         connect: {
@@ -17,7 +31,7 @@ module.exports = function (grunt) {
               }
             },
             js: {
-                src: ['public/lib/*/*.js', 'public/src/*.js']
+                src: pubJsFiles
             }
         },
         uglify: {
@@ -29,12 +43,7 @@ module.exports = function (grunt) {
           },
           js: {
             files: {
-              'public/dist/js/deploy.js': [
-                      'public/lib/effects/object.js',
-                      'public/lib/fades/object.js',
-                      'public/lib/*/*.js',
-                      'public/src/*.js'
-                      ]
+              'public/dist/js/deploy.js': pubJsFiles
             }
           }
         },
@@ -68,12 +77,22 @@ module.exports = function (grunt) {
         },
         preprocess: {
             dev: {
-                src: './html/dev/index.html',
-                dest: './public/index.html'
+                src: './html/index.html',
+                dest: './public/index.html',
+                options: {
+                    context: {
+                        JS_FILES: jsFiles.join(','),
+                    }
+                }
             },
             prod: {
-                src: './html/prod/index.html',
-                dest: './public/index.html'
+                src: './html/index.html',
+                dest: './public/index.html',
+                options: {
+                    context: {
+                        JS_FILES: 'dist/js/deploy.js',
+                    }
+                }
             }
         }
     });
@@ -98,4 +117,4 @@ module.exports = function (grunt) {
       'concurrent:dev',
     ]);
     grunt.registerTask('default', ['dev']);
-}
+};

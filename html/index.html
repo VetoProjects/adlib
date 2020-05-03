@@ -249,14 +249,8 @@
             </div>
         </div>
 
-        <script charset="utf-8" type="text/javascript" src="lib/midi.js"></script>
-        <script charset="utf-8" type="text/javascript" src="lib/asyncFile.js"></script>
-        <script charset="utf-8" type="text/javascript" src="lib/widgets/player.js"></script>
-        <script charset="utf-8" type="text/javascript" src="lib/webgl/shaderProgram.js"></script>
-        <script charset="utf-8" type="text/javascript" src="lib/webgl/videoTexture.js"></script>
-        <script charset="utf-8" type="text/javascript" src="lib/widgets/videoCanvas.js"></script>
-        <script charset="utf-8" type="text/javascript" src="lib/widgets/crossfader.js"></script>
-        <script charset="utf-8" type="text/javascript" src="src/main.js"></script>
-        <script charset="utf-8" type="text/javascript" src="lib/widgets/knob.js"></script>
+        <!-- @foreach $FILE in JS_FILES -->
+        <script type="text/javascript" charset="utf-8" src="$FILE"></script>
+        <!-- @endfor -->
     </body>
 </html>
